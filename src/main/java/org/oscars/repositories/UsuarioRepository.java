@@ -15,4 +15,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findByCorreoAndPassword(String correo, String password);
 
     List<Usuario> findAllByTipoUsuario(Integer tipoUsuario);
+
+    boolean existsByUsername(String username);
 }

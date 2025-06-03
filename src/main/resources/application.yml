@@ -11,6 +11,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
 
+jwt:
+  secret: LxH1+zJ0bQ8ay7+7zQpAVt1kE1qG0SxKULKXGZ4X2TfThBRP5lFQ+7nXgr7B4zUPTZ9GdZKZ0Gp3EfUuKQ==
+  expiration: 3600000
+
 server:
   port: 8017
   servlet:
