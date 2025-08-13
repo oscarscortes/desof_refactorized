@@ -2,6 +2,7 @@ package org.oscars.services;
 
 import org.oscars.models.desof.domain.Inventario;
 import org.oscars.repositories.InventarioRepository;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +36,15 @@ public class InventarioService {
     public List<Inventario> findByProducto(Long codigo) {
         return this.inventarioRepository.findAllByProducto_Codigo(codigo);
     }
+
+    @Transactional(readOnly = true)
+    public List<Inventario> findBySucursalAndProveedor(Long sucursalId, Long proveedorId) {
+        return this.inventarioRepository.findAllBySucursal_IdAndProducto_Proveedor_Id(sucursalId, proveedorId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Inventario> findTopSellBySucursal(Long sucursalId) {
+        return this.inventarioRepository.findTopSellBySucursal_Id(sucursalId);
+    }
+
 }
