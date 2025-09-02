@@ -15,8 +15,13 @@ public interface InventarioRepository extends JpaRepository<Inventario, Long> {
 
     List<Inventario> findAllByProducto_Codigo(Long productoCodigo);
 
-    List<Inventario> findAllBySucursal_IdAndProducto_Proveedor_Id(Long sucursalId, Long productoProveedorId);
+    List<Inventario> findAllBySucursal_IdAndProducto_Proveedor_IdAndEstatus(Long sucursalId, Long productoProveedorId, Integer estatus);
 
-    @Query("SELECT i FROM Producto  p INNER JOIN Inventario i ON p.codigo = i.producto.codigo INNER JOIN Sucursal s ON i.sucursal.id = s.id INNER JOIN CompraDetalle cd ON cd.inventario.id = i.id WHERE s.id = :sucursalId GROUP BY i.id ORDER BY SUM(cd.cantidad) DESC FETCH FIRST 6 ROWS ONLY")
+    @Query("SELECT i FROM Producto  p INNER JOIN Inventario i ON p.codigo = i.producto.codigo INNER JOIN Sucursal s ON i.sucursal.id = s.id INNER JOIN CompraDetalle cd ON cd.inventario.id = i.id WHERE s.id = :sucursalId AND i.estatus = 1 GROUP BY i.id ORDER BY SUM(cd.cantidad) DESC FETCH FIRST 6 ROWS ONLY")
     List<Inventario> findTopSellBySucursal_Id(Long sucursalId);
+
+    Inventario findAllByProducto_CodigoAndSucursal_Id(Long productoCodigo, Long sucursalId);
+
+    @Query("SELECT i FROM Inventario i INNER JOIN Sucursal s ON i.sucursal.id = s.id INNER JOIN Producto p ON i.producto.codigo = p.codigo WHERE i.estatus = 1 AND s.id = :sucursalId AND (p.color = :color OR p.modelo = :modelo)")
+    List<Inventario> recomendedItems(String color, String modelo, Long sucursalId);
 }

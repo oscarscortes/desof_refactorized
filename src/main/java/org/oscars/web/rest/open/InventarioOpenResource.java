@@ -37,4 +37,16 @@ public class InventarioOpenResource {
         List<Inventario> inventarios = this.inventarioService.findTopSellBySucursal(sucursalId);
         return ResponseEntity.ok(inventarios);
     }
+
+    @GetMapping("/producto-sucursal/{codigo}/{sucursalId}")
+    public ResponseEntity<Inventario> findByProducto(@PathVariable Long codigo, @PathVariable Long sucursalId) {
+        Inventario inventarios = this.inventarioService.findByProductoAndSucursal(codigo, sucursalId);
+        return ResponseEntity.ok(inventarios);
+    }
+
+    @GetMapping("/recomended-items/{color}/{modelo}/{sucursalId}")
+    public ResponseEntity<List<Inventario>> findRecomendedItems(@PathVariable String color, @PathVariable String modelo, @PathVariable Long sucursalId) {
+        List<Inventario> inventarios = this.inventarioService.recomendedItems(color, modelo, sucursalId);
+        return ResponseEntity.ok(inventarios);
+    }
 }
