@@ -4,6 +4,7 @@ import org.oscars.models.desof.domain.Inventario;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,17 @@ public interface InventarioRepository extends JpaRepository<Inventario, Long> {
 
     @Query("SELECT i FROM Inventario i INNER JOIN Sucursal s ON i.sucursal.id = s.id INNER JOIN Producto p ON i.producto.codigo = p.codigo WHERE i.estatus = 1 AND s.id = :sucursalId AND (p.color = :color OR p.modelo = :modelo)")
     List<Inventario> recomendedItems(String color, String modelo, Long sucursalId);
+
+    @Query("SELECT i FROM Inventario i " +
+            "INNER JOIN Producto p ON i.producto.codigo = p.codigo " +
+            "INNER JOIN Sucursal s ON i.sucursal.id = s.id " +
+            "INNER JOIN Proveedor pr ON pr.id = p.proveedor.id " +
+            "WHERE s.id = :sucursalId AND (" +
+            "LOWER(p.talla) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(p.color) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(p.modelo) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(p.nombre) LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "LOWER(pr.nombre) LIKE LOWER(CONCAT('%', :query, '%')))")
+    List<Inventario> search(@Param("sucursalId") Long sucursalId, @Param("query") String query);
+
 }

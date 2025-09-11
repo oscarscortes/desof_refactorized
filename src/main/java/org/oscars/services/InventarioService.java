@@ -56,4 +56,9 @@ public class InventarioService {
         return this.inventarioRepository.recomendedItems(color, modelo, sucursalId);
     }
 
+    @Transactional(readOnly = true)
+    public List<Inventario> search(Long sucursalId, String query) {
+        return this.inventarioRepository.search(sucursalId, query);
+    }
+
 }

@@ -49,4 +49,10 @@ public class InventarioOpenResource {
         List<Inventario> inventarios = this.inventarioService.recomendedItems(color, modelo, sucursalId);
         return ResponseEntity.ok(inventarios);
     }
+
+    @GetMapping("/search/{term}/{sucursalId}")
+    public ResponseEntity<List<Inventario>> searchInSucursal(@PathVariable("term") String term, @PathVariable("sucursalId") Long sucursalId) {
+        List<Inventario> inventarios = this.inventarioService.search(sucursalId, term);
+        return ResponseEntity.ok(inventarios);
+    }
 }
